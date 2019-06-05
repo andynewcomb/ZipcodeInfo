@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ZipcodeInfo.DomainClasses;
 
 namespace ZipcodeInfo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ZipcodeInfoController : ControllerBase
     {
         // GET api/values
         [HttpGet]
@@ -17,11 +18,18 @@ namespace ZipcodeInfo.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        
+        [HttpPost]
+        public IActionResult Get(Zipcode zipcode)
         {
-            return "value";
+
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return BadRequest(zipcode);
+            
         }
 
         // POST api/values
