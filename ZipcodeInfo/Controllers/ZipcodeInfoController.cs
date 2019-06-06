@@ -11,6 +11,13 @@ namespace ZipcodeInfo.Controllers
     [ApiController]
     public class ZipcodeInfoController : ControllerBase
     {
+        IValidator<Zipcode> _zipcodeValidator;
+
+        public ZipcodeInfoController(IValidator<Zipcode> zipcodeValidator)
+        {
+            _zipcodeValidator = zipcodeValidator;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -23,11 +30,18 @@ namespace ZipcodeInfo.Controllers
         public IActionResult Get(Zipcode zipcode)
         {
 
-
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                var validateResponse = _zipcodeValidator.Validate(zipcode);
+                
             }
+            catch (Exception e)
+            {
+                return StatusCode(500);
+                //todo log it
+            }
+            
+                       
             return BadRequest(zipcode);
             
         }
