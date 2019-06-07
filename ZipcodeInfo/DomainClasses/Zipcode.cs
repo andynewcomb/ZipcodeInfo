@@ -8,10 +8,17 @@ namespace ZipcodeInfo.DomainClasses
 {
     public class Zipcode
     {
-        [Required]
-        public string Country { get; set; }
 
-        [MinLength(5)]        
+        public Zipcode()
+        {}
+
+        public Zipcode(string code)
+        {
+            Code = code;
+        }
+
+        
+        public string Country { get; set; }
         public string Code { get; set; }
     }
 }

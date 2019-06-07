@@ -33,6 +33,9 @@ namespace Tests.UnitTests
             Assert.AreEqual(500, ((StatusCodeResult)actionResult).StatusCode);            
         }
 
+        //Todo test for logging... send in a logger.
+
+
         //[TestCase("1234")]
         //[TestCase("134")]
         //[TestCase("2")]        

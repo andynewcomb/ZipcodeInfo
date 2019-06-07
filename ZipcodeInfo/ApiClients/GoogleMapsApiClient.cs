@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ZipcodeInfo.DomainClasses
+namespace ZipcodeInfo.ApiClients
 {
-    public interface IValidator<T>
+    public class GoogleMapsApiClient
     {
-        ValidationResponse Validate(T model);
+
     }
 }

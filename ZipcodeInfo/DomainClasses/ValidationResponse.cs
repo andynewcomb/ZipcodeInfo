@@ -9,5 +9,11 @@ namespace ZipcodeInfo.DomainClasses
     {
         public bool IsValid { get; set; }
         public string Message { get; set; }
+
+        public void MakeInvalid(string message)
+        {
+            IsValid = false;
+            Message = message;
+        }
     }
 }
