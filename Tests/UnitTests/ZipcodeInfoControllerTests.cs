@@ -43,7 +43,7 @@ namespace Tests.UnitTests
             var apiResponse = new ApiResponse<CayuseZipcodeInfo>
             {
                 IsValidationError = true,
-                Message = "some validation error"
+                ErrorMessage = "some validation error"
             };
             var mockProcessor = new Mock<IZipcodeInfoProcessor>();
 
@@ -57,7 +57,7 @@ namespace Tests.UnitTests
             Assert.AreEqual(typeof(BadRequestObjectResult), actionResult.GetType());
             Assert.AreEqual(400, ((BadRequestObjectResult)actionResult).StatusCode);
             StringAssert.AreEqualIgnoringCase("some validation error", 
-                ((ApiResponse<CayuseZipcodeInfo>)((BadRequestObjectResult)actionResult).Value).Message);
+                ((ApiResponse<CayuseZipcodeInfo>)((BadRequestObjectResult)actionResult).Value).ErrorMessage);
         }
         
 

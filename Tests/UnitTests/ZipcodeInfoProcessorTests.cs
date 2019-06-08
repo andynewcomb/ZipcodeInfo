@@ -38,7 +38,7 @@ namespace Tests.UnitTests
                 _mockOpenWeatherApiClient.Object);
             var apiResponse = await processor.GenerateZipcodeInfoAsync(new Zipcode());
             Assert.IsFalse(apiResponse.IsSuccess);
-            StringAssert.AreEqualIgnoringCase("Some explanation",apiResponse.Message);
+            StringAssert.AreEqualIgnoringCase("Some explanation",apiResponse.ErrorMessage);
         }
 
     }

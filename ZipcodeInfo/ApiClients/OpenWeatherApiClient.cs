@@ -39,7 +39,7 @@ namespace ZipcodeInfo.ApiClients
             if (weatherInfo == null)
             {
                 response.IsSuccess = false;
-                response.Message = "Failed to retrieve weather information";
+                response.ErrorMessage = "Failed to retrieve weather information";
                 return response;
             }
 

@@ -29,7 +29,7 @@ namespace ZipcodeInfo.Processors
             if (!validationResponse.IsValid)
             {
                 apiResponse.IsSuccess = false;
-                apiResponse.Message = validationResponse.Message;
+                apiResponse.ErrorMessage = validationResponse.Message;
                 apiResponse.IsValidationError = true;
                 return apiResponse;
             }
