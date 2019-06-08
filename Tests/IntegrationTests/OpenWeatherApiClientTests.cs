@@ -12,12 +12,22 @@ namespace Tests.IntegrationTests
 {
     class OpenWeatherApiClientTests
     {
+
+        private HttpClient _weatherHttpClient;
+        [SetUp]
+        public void SetUp()
+        {
+            _weatherHttpClient = new HttpClient();
+            _weatherHttpClient.BaseAddress = new Uri("http://api.openweathermap.org/data/2.5/");
+            _weatherHttpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        }
+
         [Test]
-        public async Task GetWeather_ReturnsWeather()
+        public async Task GetWeatherInfoForZipcodeAsync_ReturnsWeather()
         {
             //arrange
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            mockHttpClientFactory.Setup(f => f.CreateClient("openweather")).Returns(new HttpClient());
+            mockHttpClientFactory.Setup(f => f.CreateClient("openweather")).Returns(_weatherHttpClient);
             var client = new OpenWeatherApiClient(mockHttpClientFactory.Object);
             var zipcode = new Zipcode("97219");
 

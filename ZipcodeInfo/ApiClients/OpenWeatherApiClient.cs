@@ -28,8 +28,6 @@ namespace ZipcodeInfo.ApiClients
 
             var httpClient = _httpClientFactory.CreateClient("openweather");
             //todo pull url and information from appsettings.json file instead of hard coding
-            httpClient.BaseAddress = new Uri("http://api.openweathermap.org/data/2.5/");
-            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             var httpResponseMessage = await httpClient.GetAsync("weather?zip=97219&APPID=2565827e7fc0a0e5ee94b37c0a8be672");
             var httpContent = await httpResponseMessage.Content.ReadAsStringAsync();
 
@@ -44,8 +42,6 @@ namespace ZipcodeInfo.ApiClients
                 response.Message = "Failed to retrieve weather information";
                 return response;
             }
-
-
 
             response.Data = weatherInfo;
             response.IsSuccess = true;

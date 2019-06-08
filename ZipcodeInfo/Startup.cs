@@ -26,7 +26,16 @@ namespace ZipcodeInfo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddHttpClient();
+            services.AddHttpClient("googleapis", c =>
+            {
+                c.BaseAddress = new Uri("https://maps.googleapis.com/maps/api/");
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+            services.AddHttpClient("openweather", c =>
+            {
+                c.BaseAddress = new Uri("http://api.openweathermap.org/data/2.5/");
+                c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
