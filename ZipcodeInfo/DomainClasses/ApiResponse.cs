@@ -10,5 +10,6 @@ namespace ZipcodeInfo.DomainClasses
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
         public T Data { get; set; }
+        public bool IsValidationError { get; set; }
     }
 }

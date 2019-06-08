@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ZipcodeInfo.DomainClasses;
+using ZipcodeInfo.Processors;
 
 namespace ZipcodeInfo.Controllers
 {
@@ -11,57 +12,33 @@ namespace ZipcodeInfo.Controllers
     [ApiController]
     public class ZipcodeInfoController : ControllerBase
     {
-        IValidator<Zipcode> _zipcodeValidator;
+        private IZipcodeInfoProcessor _zipcodeInfoProcessor;
 
-        public ZipcodeInfoController(IValidator<Zipcode> zipcodeValidator)
+        public ZipcodeInfoController(IZipcodeInfoProcessor zipcodeInfoProcessor)
         {
-            _zipcodeValidator = zipcodeValidator;
+            _zipcodeInfoProcessor = zipcodeInfoProcessor;
         }
 
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        
         [HttpPost]
-        public IActionResult Get(Zipcode zipcode)
+        public async Task<IActionResult> Get(Zipcode zipcode)
         {
-
+            var apiResponse = new ApiResponse<CayuseZipcodeInfo>();
             try
             {
-                var validateResponse = _zipcodeValidator.Validate(zipcode);
-                
+                apiResponse = await _zipcodeInfoProcessor.GenerateZipcodeInfoAsync(zipcode);
+                if (apiResponse.IsValidationError)
+                {
+                    return BadRequest(apiResponse);
+                }
             }
             catch (Exception e)
             {
                 return StatusCode(500);
-                //todo log it
+                //todo log exception
             }
-            
-                       
-            return BadRequest(zipcode);
-            
+
+            return new JsonResult(apiResponse);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

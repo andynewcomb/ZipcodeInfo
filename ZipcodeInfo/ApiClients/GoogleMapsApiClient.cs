@@ -8,7 +8,7 @@ using ZipcodeInfo.DomainClasses;
 
 namespace ZipcodeInfo.ApiClients
 {
-    public class GoogleMapsApiClient
+    public class GoogleMapsApiClient : IGoogleMapsApiClient
     {
         private IHttpClientFactory _httpClientFactory;
 
@@ -29,13 +29,6 @@ namespace ZipcodeInfo.ApiClients
 
             string timezone;
             ConvertJsonToTimeZone(httpContent,out timezone);
-
-            if (timezone == null)
-            {
-                response.IsSuccess = false;
-                response.Message = "Failed to retrieve timezone information";
-                return response;
-            }
 
             response.Data = timezone;
             response.IsSuccess = true;

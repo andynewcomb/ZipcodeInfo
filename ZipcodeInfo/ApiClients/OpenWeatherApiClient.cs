@@ -14,7 +14,7 @@ namespace ZipcodeInfo.ApiClients
     /// <summary>
     /// Client for accessing the API provided by OpenWeatherMap.org
     /// </summary>
-    public class OpenWeatherApiClient
+    public class OpenWeatherApiClient : IOpenWeatherApiClient
     {
         private IHttpClientFactory _httpClientFactory;
         public OpenWeatherApiClient(IHttpClientFactory httpClientFactory)

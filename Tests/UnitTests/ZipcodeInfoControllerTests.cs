@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using ZipcodeInfo.Controllers;
 using ZipcodeInfo.DomainClasses;
 using System;
+using System.Threading.Tasks;
+using ZipcodeInfo.Processors;
 
 namespace Tests.UnitTests
 {
@@ -17,48 +19,47 @@ namespace Tests.UnitTests
         }
 
         [Test]
-        public void Get_ExceptionOccurs_HandleTheException()
+        public async Task Get_ExceptionOccurs_HandleTheException()
         {
             //arrange
-            var mockValidator = new Mock<IValidator<Zipcode>>();
-            mockValidator.Setup(v => v.Validate(It.IsAny<Zipcode>())).Throws<Exception>();
-            var controller = new ZipcodeInfoController(mockValidator.Object);
+            var mockProcessor = new Mock<IZipcodeInfoProcessor>();
+            mockProcessor.Setup( p => p.GenerateZipcodeInfoAsync(It.IsAny<Zipcode>())).ThrowsAsync(new Exception());
+            var controller = new ZipcodeInfoController(mockProcessor.Object);
             IActionResult actionResult=null;
 
-            
 
             //act and Assert
-            Assert.DoesNotThrow(() => actionResult = controller.Get(new Zipcode()));
+            Assert.DoesNotThrowAsync(async () => actionResult = await controller.Get(new Zipcode()));
+            mockProcessor.Verify(p=>p.GenerateZipcodeInfoAsync(It.IsAny<Zipcode>()),Times.AtLeastOnce);
             Assert.AreEqual(typeof(StatusCodeResult), actionResult.GetType());
             Assert.AreEqual(500, ((StatusCodeResult)actionResult).StatusCode);            
         }
 
-        //Todo test for logging... send in a logger.
+        //Todo test for logging when exception occurs.
+
+        [Test]
+        public async Task Get_InvalidZipcode_ReturnBadRequest()
+        {
+            var apiResponse = new ApiResponse<CayuseZipcodeInfo>
+            {
+                IsValidationError = true,
+                Message = "some validation error"
+            };
+            var mockProcessor = new Mock<IZipcodeInfoProcessor>();
+
+            mockProcessor.Setup(p => p.GenerateZipcodeInfoAsync(It.IsAny<Zipcode>())).ReturnsAsync(apiResponse);
+            var controller = new ZipcodeInfoController(mockProcessor.Object);
+            
 
 
-        //[TestCase("1234")]
-        //[TestCase("134")]
-        //[TestCase("2")]        
-        //public void Get_ZipCodeLessThan5digits_Return400Response(string code)
-        //{
-        //    //arrange 
-        //    var result = new List<ValidationResult>();
-        //    var zipcode = new Zipcode() { Code = code };
-        //    var controller = new ZipcodeInfoController();
-
-        //    //act
-        //    var zipcodeIsValid = Validator.TryValidateObject(zipcode, new ValidationContext(zipcode), result);
-        //    var result = controller.Get(zipcode);
-
-
-        //    //assert
-        //    Assert.IsFalse(zipcodeIsValid);
-        //    Assert.AreEqual(typeof(BadRequestObjectResult), result.GetType());
-
-
-
-        //}
-
+            //act and Assert
+            var actionResult = await controller.Get(new Zipcode());
+            Assert.AreEqual(typeof(BadRequestObjectResult), actionResult.GetType());
+            Assert.AreEqual(400, ((BadRequestObjectResult)actionResult).StatusCode);
+            StringAssert.AreEqualIgnoringCase("some validation error", 
+                ((ApiResponse<CayuseZipcodeInfo>)((BadRequestObjectResult)actionResult).Value).Message);
+        }
+        
 
     }
 }
