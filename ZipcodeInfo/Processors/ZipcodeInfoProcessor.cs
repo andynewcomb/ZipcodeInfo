@@ -34,7 +34,36 @@ namespace ZipcodeInfo.Processors
                 return apiResponse;
             }
 
+            var weatherApiResponse = await _openWeatherApiClient.GetWeatherInfoForZipcodeAsync(zipcode);
+            var latitude = weatherApiResponse.Data.Latitude;
+            var longitude = weatherApiResponse.Data.Longitude;
+            var timestamp = ConvertToUnixTimestamp(DateTime.UtcNow);
+
+            var elevationApiResponse = await _googleMapsApiClient.GetElevationAsync(longitude, latitude);
+            var timezoneApiResponse = await _googleMapsApiClient.GetTimeZoneAsync(longitude, latitude, timestamp);
+
+            var cayuseZipcodeInfo = new CayuseZipcodeInfo()
+            {
+                CityName = weatherApiResponse.Data.City,
+                CurrentTempFahrenheit = weatherApiResponse.Data.TempFahrenheit,
+                TimezoneName = timezoneApiResponse.Data,
+                Elevation = elevationApiResponse.Data
+            };
+
+            apiResponse.IsSuccess = true;
+            apiResponse.Data = cayuseZipcodeInfo;
+
             return apiResponse;
         }
+
+        
+
+        private double ConvertToUnixTimestamp(DateTime date)
+        {
+            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            TimeSpan diff = date - origin;
+            return Math.Floor(diff.TotalSeconds);
+        }
+
     }
 }

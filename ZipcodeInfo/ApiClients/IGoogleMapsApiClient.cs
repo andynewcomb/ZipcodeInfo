@@ -8,7 +8,7 @@ namespace ZipcodeInfo.ApiClients
 {
     public interface IGoogleMapsApiClient
     {
-        Task<ApiResponse<string>> GetTimeZoneAsync(double lon, double lat, long timeStamp);
+        Task<ApiResponse<string>> GetTimeZoneAsync(double lon, double lat, double timeStamp);
         Task<ApiResponse<double>> GetElevationAsync(double lon, double lat);
     }
 }

@@ -19,8 +19,8 @@ namespace ZipcodeInfo.Controllers
             _zipcodeInfoProcessor = zipcodeInfoProcessor;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Get(Zipcode zipcode)
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery]Zipcode zipcode)
         {
             var apiResponse = new ApiResponse<CayuseZipcodeInfo>();
             try

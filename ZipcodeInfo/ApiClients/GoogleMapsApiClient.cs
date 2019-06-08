@@ -18,7 +18,7 @@ namespace ZipcodeInfo.ApiClients
         }
 
 
-        public async Task<ApiResponse<string>> GetTimeZoneAsync(double lon, double lat, long timeStamp)
+        public async Task<ApiResponse<string>> GetTimeZoneAsync(double lon, double lat, double timeStamp)
         {
             var response = new ApiResponse<string>();
 

@@ -30,7 +30,7 @@ namespace Tests.IntegrationTests
             var client = new GoogleMapsApiClient(mockHttpClientFactory.Object);
             var lon = -122.67d;
             var lat = 45.42d;
-            var timeStamp = 1559931220;
+            var timeStamp = 1559931220d;
 
             //act
             ApiResponse<string> apiResponse = await client.GetTimeZoneAsync(lon, lat, timeStamp);
