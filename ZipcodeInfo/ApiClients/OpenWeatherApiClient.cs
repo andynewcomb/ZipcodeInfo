@@ -28,7 +28,7 @@ namespace ZipcodeInfo.ApiClients
 
             var httpClient = _httpClientFactory.CreateClient("openweather");
             //todo pull url and information from appsettings.json file instead of hard coding
-            var httpResponseMessage = await httpClient.GetAsync("weather?zip=97219&APPID=2565827e7fc0a0e5ee94b37c0a8be672");
+            var httpResponseMessage = await httpClient.GetAsync($"weather?zip={zipcode.Code}&APPID=2565827e7fc0a0e5ee94b37c0a8be672");
             var httpContent = await httpResponseMessage.Content.ReadAsStringAsync();
 
             
