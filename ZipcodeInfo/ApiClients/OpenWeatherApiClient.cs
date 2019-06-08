@@ -63,6 +63,8 @@ namespace ZipcodeInfo.ApiClients
             JObject jsonObject = JObject.Parse(json);
             weatherInfo.City = (string)jsonObject["name"];
             weatherInfo.TempKelvin = (double)jsonObject["main"]["temp"];
+            weatherInfo.Latitude = (double) jsonObject["coord"]["lat"];
+            weatherInfo.Longitude = (double)jsonObject["coord"]["lon"];
         }
 
     }
