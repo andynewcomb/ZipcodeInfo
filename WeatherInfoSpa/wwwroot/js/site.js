@@ -4,7 +4,7 @@
 // Write your Javascript code.
 
 
-$('#zipcode').blur(function() {
+$('#submitzip').click(function() {
     var zipcode = $('#zipcode').val();
     var apiEndpoint = "https://zipcodeinfo.azurewebsites.net/api/zipcodeinfo?code=";
     var url = apiEndpoint + zipcode;
@@ -13,7 +13,8 @@ $('#zipcode').blur(function() {
 
     request.open('get', url, true);
     request.onload = function () {
-        $('#message').text(request.responseText);
+        var obj = JSON.parse(request.responseText);
+        $('#message').text(JSON.stringify(obj, undefined, 2));
     };
 
     request.send();
