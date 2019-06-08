@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ZipcodeInfo.DomainClasses;
 using ZipcodeInfo.Processors;
@@ -20,6 +21,7 @@ namespace ZipcodeInfo.Controllers
         }
 
         [HttpGet]
+        [EnableCors]
         public async Task<IActionResult> Get([FromQuery]Zipcode zipcode)
         {
             var apiResponse = new ApiResponse<CayuseZipcodeInfo>();

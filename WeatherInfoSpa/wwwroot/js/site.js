@@ -6,21 +6,19 @@
 
 $('#zipcode').blur(function() {
     var zipcode = $('#zipcode').val();
-    httpGet()
-});
+    var apiEndpoint = "https://zipcodeinfo.azurewebsites.net/api/zipcodeinfo?code=";
+    var url = apiEndpoint + zipcode;
 
-function httpGet(url, callback) {
     var request = new XMLHttpRequest();
 
     request.open('get', url, true);
-    request.onload = function() {
-        callback(request);
+    request.onload = function () {
+        $('#message').text(request.responseText);
     };
 
     request.send();
-}
+});
 
-httGet('details.txt',
-    function(request) {
-        console.log(request.responseText);
-    });
+
+
+    

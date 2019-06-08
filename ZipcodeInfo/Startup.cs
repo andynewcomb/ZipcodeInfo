@@ -28,7 +28,7 @@ namespace ZipcodeInfo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IValidator<Zipcode>,ZipcodeValidator>();
+            services.AddTransient<IValidator<Zipcode>, ZipcodeValidator>();
             services.AddTransient<IZipcodeInfoProcessor, ZipcodeInfoProcessor>();
             services.AddTransient<IGoogleMapsApiClient, GoogleMapsApiClient>();
             services.AddTransient<IOpenWeatherApiClient, OpenWeatherApiClient>();
@@ -42,6 +42,15 @@ namespace ZipcodeInfo
             {
                 c.BaseAddress = new Uri("http://api.openweathermap.org/data/2.5/");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                    });
             });
         }
 
